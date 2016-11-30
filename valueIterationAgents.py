@@ -1,4 +1,4 @@
-import mdp, util
+import mdp, util, gridworld
 
 from learningAgents import ValueEstimationAgent
 
@@ -68,6 +68,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
           Return the value of the state (computed in __init__).
         """
+
         return self.values[state]
 
 
@@ -84,7 +85,7 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         return v
 
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
 
     def computeActionFromValues(self, state):
         """
@@ -97,9 +98,11 @@ class ValueIterationAgent(ValueEstimationAgent):
         """
         "*** YOUR CODE HERE ***"
         #mdp.isTerminal(state)  ############################ Theta a threshold, Theta>0
-        if mdp.isTerminal(state): return None
+        if self.mdp.isTerminal(state):
+            v = None
+            return v
         #mdp.getPossibleActions(state)#################### A is the set of all actions
-        A = mdp.getPossibleActions(state)
+        A = self.mdp.getPossibleActions(state)
         #If the list is empty...
         if not A: return None
         #another dictionary to hold the values...
