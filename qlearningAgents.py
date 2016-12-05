@@ -114,8 +114,8 @@ class QLearningAgent(ReinforcementAgent):
           it will be called on your behalf
         """
         "*** YOUR CODE HERE ***"
-        print self.alpha
-        print self.discount
+        #print self.alpha
+        #print self.discount
         sample = reward + self.discount * self.computeValueFromQValues(nextState) - self.getQValue(state, action)
         self.Qvalues[(state, action)] = self.getQValue(state, action) + self.alpha * (sample)
 
