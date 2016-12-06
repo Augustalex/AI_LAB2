@@ -97,7 +97,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        #mdp.isTerminal(state)  ############################ Theta a threshold, Theta>0
+        #mdp.isTerminal(state)############################ Theta a threshold, Theta>0
         if self.mdp.isTerminal(state):
             v = None
             return v

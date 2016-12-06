@@ -4,6 +4,8 @@ from featureExtractors import *
 
 import random,util,math
 
+#-p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumGrid
+
 class QLearningAgent(ReinforcementAgent):
     """
       Q-Learning Agent
@@ -38,10 +40,7 @@ class QLearningAgent(ReinforcementAgent):
           or the Q node value otherwise
         """
         "*** YOUR CODE HERE ***"
-
         return self.Qvalues[(state,action)]
-
-
 
     def computeValueFromQValues(self, state):
         """
@@ -51,6 +50,7 @@ class QLearningAgent(ReinforcementAgent):
           terminal state, you should return a value of 0.0.
         """
         "*** YOUR CODE HERE ***"
+
         legalActions = self.getLegalActions(state)
         possibleValues = util.Counter()
 
@@ -116,6 +116,14 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         #print self.alpha
         #print self.discount
+
+        """
+        QLearning update algorithm:
+
+        Q(s,a) = (1-alpha) * Q(s,a) + alpha * sample
+
+        sample = R(s,a,s') + gamma * max(Q(s',a'))
+        """
         sample = reward + self.discount * self.computeValueFromQValues(nextState) - self.getQValue(state, action)
         self.Qvalues[(state, action)] = self.getQValue(state, action) + self.alpha * (sample)
 
@@ -180,6 +188,15 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
+        #Here we get the features using the getFeatures extractor
+        features = self.featExtractor.getFeatures(state, action)
+        #Here we get the weights
+        weights = self.getWeights()
+        #here we just do as it says up there :D
+        dotProduct = features * weights
+
+        return dotProduct
+
         util.raiseNotDefined()
 
     def update(self, state, action, nextState, reward):
@@ -187,7 +204,20 @@ class ApproximateQAgent(PacmanQAgent):
            Should update your weights based on transition
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #difference = to reward + gamma * Q(S', a') - Q(s, a)
+        difference = reward + self.discount * self.computeValueFromQValues(nextState) - self.getQValue(state, action)
+        weights = self.getWeights()
+
+        if len(weights) == 0:
+            weights[(state, action)] = 0
+
+        features = self.featExtractor.getFeatures(state, action)
+        #weight-updating all the weights and features
+        for key in features:
+            features[key] = features[key] * self.alpha * difference
+        #_radd_ = "right add"
+        weights.__radd__(features)
+        self.weights = weights.copy()
 
     def final(self, state):
         "Called at the end of each game."
@@ -198,4 +228,5 @@ class ApproximateQAgent(PacmanQAgent):
         if self.episodesSoFar == self.numTraining:
             # you might want to print your weights here for debugging
             "*** YOUR CODE HERE ***"
+            print self.getWeights()
             pass
