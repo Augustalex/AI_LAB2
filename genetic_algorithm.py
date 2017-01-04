@@ -61,11 +61,11 @@ class GA(object):
         population = np.random.random_integers(0,1,(populationSize,numberOfGenes))
         return population
 
-    def DecodeChromosome(self, chromosome, nVariables, variableRange):
-        nGenes = np.size(chromosome,0) # Number of genes in the chromosome
-        nBits = nGenes/nVariables      # Number of bits (genes) per variable
+    def DecodeChromosome(chromosome, nVariables, variableRange):
+        nGenes = np.size(chromosome, 0)  # Number of genes in the chromosome
+        nBits = nGenes / nVariables  # Number of bits (genes) per variable
 
-        vars = np.zeros(nVariables)    # Create a one-dimensional Numpy array of variables
+        vars = np.zeros(nVariables)  # Create a one-dimensional Numpy array of variables
 
         # Calculate the value of each variable from the bits in the bit string
 
@@ -74,11 +74,14 @@ class GA(object):
         ##############################
 
         k = len(chromosome) / nVariables
-
+        print len(chromosome)
         for i in range(0, nVariables):
             value = 0
-            for v in range(k*i, k*i+k):
-                value += pow(2, -1) * chromosome[v]
+
+            power = -1
+            for v in range(k * i, k * i + k):
+                value += pow(2, power) * chromosome[v]
+                power -= 1
 
             l = variableRange[i][0]
             u = variableRange[i][1]
