@@ -73,19 +73,17 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        k = len(chromosome) / nVariables
-        print len(chromosome)
         for i in range(0, nVariables):
             value = 0
 
             power = -1
-            for v in range(k * i, k * i + k):
+            for v in range(nBits * i, nBits * i + nBits):
                 value += pow(2, power) * chromosome[v]
                 power -= 1
 
             l = variableRange[i][0]
             u = variableRange[i][1]
-            vars[i] = l + (u - l) / (1 - pow(2, -k)) + value
+            vars[i] = l + (u - l) / (1 - pow(2, -nBits)) + value
 
         return vars
 
