@@ -73,13 +73,24 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
+        k = len(chromosome) / nVariables
+
+        for i in range(0, nVariables):
+            value = 0
+            for v in range(k*i, k*i+k):
+                value += pow(2, -1) * chromosome[v]
+
+            l = variableRange[i][0]
+            u = variableRange[i][1]
+            vars[i] = l + (u - l) / (1 - pow(2, -k)) + value
+
         return vars
 
     def RouletteWheelSelect(self, normalizedFitness):
         selected = 0
 
         # Use Roulette-Wheel Selection to select an individual to the mating pool
-		
+
 		##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
@@ -90,7 +101,7 @@ class GA(object):
         selected = 0
 
 		# Use Tournament Selection to select an individual to the mating pool
-		
+
         ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
@@ -102,7 +113,7 @@ class GA(object):
 
 		# Cross the two individuals "in-place"
 		# NB! Don't forget to use the crossover probability
-		
+
         ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
@@ -112,7 +123,7 @@ class GA(object):
 
         # Mutate the individuals "in-place"
 		# NB! Don't forget to apply the mutation probability to each bit
-		
+
 		##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
