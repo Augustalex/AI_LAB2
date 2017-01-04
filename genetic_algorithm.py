@@ -121,9 +121,9 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        first = random.randint(tournamentSize) # random selection of first individual
+        first = random.randint(tournamentSize)  # random selection of first individual
 
-        second = random.randint(tournamentSize) # second individual, guaranteed not the same as the first one
+        second = random.randint(tournamentSize)  # second individual, guaranteed not the same as the first one
         while second == first:
             second = random.randint(tournamentSize)
 
@@ -131,9 +131,9 @@ class GA(object):
 
         candidates = [first, second]
         if r < tournamentSelectionParameter:
-            return candidates.index(max(candidates)) #return the index of the highest fitness
+            return fitness.index(max(candidates))  # return the index of the highest fitness
         else:
-            return candidates.index(min(candidates)) #return the index of the lowest fitness
+            return fitness.index(min(candidates))  # return the index of the lowest fitness
 
     def Cross(self, chromosome1, chromosome2, crossoverProbability):
         pass
