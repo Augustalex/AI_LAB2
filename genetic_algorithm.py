@@ -3,8 +3,8 @@ import random
 
 import numpy as np
 
-class GA(object):
 
+class GA(object):
     def __init__(self, populationSize, numberOfGenes, crossoverProbability, mutationProbability,
                  selectionMethod, tournamentSelectionParameter, tournamentSize, numberOfVariables,
                  variableRange, numberOfGenerations, useElitism, numberOfBestIndividualCopies, fitnessFunction):
@@ -21,11 +21,11 @@ class GA(object):
         self.numberOfGenerations = int(numberOfGenerations)
         self.useElitism = bool(useElitism)
         self.numberOfBestIndividualCopies = int(numberOfBestIndividualCopies)
-        self.fitness = np.zeros((populationSize,1))
-        self.normalizedFitness = np.zeros((populationSize,1))
+        self.fitness = np.zeros((populationSize, 1))
+        self.normalizedFitness = np.zeros((populationSize, 1))
         self.population = self.InitializePopulation(populationSize, numberOfGenes)
-        self.vars = np.zeros((populationSize,numberOfVariables))
-        self.data = np.zeros((populationSize,numberOfVariables+1))
+        self.vars = np.zeros((populationSize, numberOfVariables))
+        self.data = np.zeros((populationSize, numberOfVariables + 1))
         self.generation = 0
         self.EvaluateIndividual = fitnessFunction
         self.CalculateFitness()
@@ -53,14 +53,14 @@ class GA(object):
         self.averageFitness = self.totalFitness / float(self.populationSize)
 
         fitnessRange = self.maximumFitness - self.minimumFitness
-        if(fitnessRange == 0): fitnessRange = 0.01
+        if (fitnessRange == 0): fitnessRange = 0.01
         for i in range(self.populationSize):
             self.normalizedFitness[i][0] = (self.fitness[i][0] - self.minimumFitness) / float(fitnessRange)
             self.totalNormalizedFitness = self.totalNormalizedFitness + self.normalizedFitness[i][0]
         self.averageNormalizedFitness = self.totalNormalizedFitness / float(self.populationSize)
 
     def InitializePopulation(self, populationSize, numberOfGenes):
-        population = np.random.random_integers(0,1,(populationSize,numberOfGenes))
+        population = np.random.random_integers(0, 1, (populationSize, numberOfGenes))
         return population
 
     def DecodeChromosome(chromosome, nVariables, variableRange):
@@ -92,7 +92,7 @@ class GA(object):
     def RouletteWheelSelect(self, normalizedFitness):
         # Use Roulette-Wheel Selection to select an individual to the mating pool
 
-		##############################
+        ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
@@ -107,7 +107,7 @@ class GA(object):
             if fitness_sum > random_stop:
                 return i
             else:
-                fitness_sum += normalizedFitness[i]/total_fitness
+                fitness_sum += normalizedFitness[i] / total_fitness
 
         print("Roulette Wheel Select failed. Returns 0 as selection.")
         return 0
@@ -115,67 +115,79 @@ class GA(object):
     def TournamentSelect(self, fitness, tournamentSelectionParameter, tournamentSize):
         selected = 0
 
-		# Use Tournament Selection to select an individual to the mating pool
+        # Use Tournament Selection to select an individual to the mating pool
 
         ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        return selected
+        first = random.randint(tournamentSize) # random selection of first individual
+
+        second = random.randint(tournamentSize) # second individual, guaranteed not the same as the first one
+        while second == first:
+            second = random.randint(tournamentSize)
+
+        r = random.uniform()
+
+        candidates = [first, second]
+        if r < tournamentSelectionParameter:
+            return candidates.index(max(candidates)) #return the index of the highest fitness
+        else:
+            return candidates.index(min(candidates)) #return the index of the lowest fitness
 
     def Cross(self, chromosome1, chromosome2, crossoverProbability):
         pass
 
-		# Cross the two individuals "in-place"
-		# NB! Don't forget to use the crossover probability
+    # Cross the two individuals "in-place"
+    # NB! Don't forget to use the crossover probability
 
-        ##############################
-        ### YOU'RE CODE GOES HERE ####
-        ##############################
+    ##############################
+    ### YOU'RE CODE GOES HERE ####
+    ##############################
 
     def Mutate(self, chromosome, mutationProbability):
         pass
 
-        # Mutate the individuals "in-place"
-		# NB! Don't forget to apply the mutation probability to each bit
+    # Mutate the individuals "in-place"
+    # NB! Don't forget to apply the mutation probability to each bit
 
-		##############################
-        ### YOU'RE CODE GOES HERE ####
-        ##############################
+    ##############################
+    ### YOU'RE CODE GOES HERE ####
+    ##############################
 
     def InsertBestIndividual(self, population, individual, numberOfBestIndividualCopies):
         for i in range(numberOfBestIndividualCopies):
-            population[-1-i] = individual.copy()
+            population[-1 - i] = individual.copy()
 
     def Step(self):
         if self.populationSize % 2 == 0:
-            tempPopulation = np.zeros([self.populationSize,self.numberOfGenes], dtype=int)
+            tempPopulation = np.zeros([self.populationSize, self.numberOfGenes], dtype=int)
         else:
-            tempPopulation = np.zeros([self.populationSize+1,self.numberOfGenes], dtype=int)
+            tempPopulation = np.zeros([self.populationSize + 1, self.numberOfGenes], dtype=int)
 
-        for i in range(0,self.populationSize,2):
+        for i in range(0, self.populationSize, 2):
             if self.selectionMethod == 0:
-                i1 = self.TournamentSelect(self.fitness,self.tournamentSelectionParameter,self.tournamentSize)
-                i2 = self.TournamentSelect(self.fitness,self.tournamentSelectionParameter,self.tournamentSize)
+                i1 = self.TournamentSelect(self.fitness, self.tournamentSelectionParameter, self.tournamentSize)
+                i2 = self.TournamentSelect(self.fitness, self.tournamentSelectionParameter, self.tournamentSize)
             else:
                 i1 = self.RouletteWheelSelect(self.normalizedFitness)
                 i2 = self.RouletteWheelSelect(self.normalizedFitness)
             chromosome1 = self.population[i1].copy()
             chromosome2 = self.population[i2].copy()
 
-            self.Cross(chromosome1,chromosome2,self.crossoverProbability)
-            self.Mutate(chromosome1,self.mutationProbability)
-            self.Mutate(chromosome2,self.mutationProbability)
+            self.Cross(chromosome1, chromosome2, self.crossoverProbability)
+            self.Mutate(chromosome1, self.mutationProbability)
+            self.Mutate(chromosome2, self.mutationProbability)
 
             tempPopulation[i] = chromosome1
-            tempPopulation[i+1] = chromosome2
+            tempPopulation[i + 1] = chromosome2
 
         if self.populationSize % 2 != 0:
             tempPopulation = tempPopulation[0:self.populationSize]
 
         if self.useElitism:
             bestIndividual = self.population[self.bestIndividualIndex]
-            self.InsertBestIndividual(tempPopulation,bestIndividual,self.numberOfBestIndividualCopies)
+            self.InsertBestIndividual(tempPopulation, bestIndividual, self.numberOfBestIndividualCopies)
         self.population = tempPopulation
         self.generation += 1
         self.CalculateFitness()
