@@ -1,4 +1,6 @@
 import operator
+import random
+
 import numpy as np
 
 class GA(object):
@@ -88,15 +90,27 @@ class GA(object):
         return vars
 
     def RouletteWheelSelect(self, normalizedFitness):
-        selected = 0
-
         # Use Roulette-Wheel Selection to select an individual to the mating pool
 
 		##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        return selected
+        random_stop = random.uniform(0, 1)
+
+        total_fitness = 0
+        for f in normalizedFitness:
+            total_fitness += f
+
+        fitness_sum = 0
+        for i in range(0, len(normalizedFitness)):
+            if fitness_sum > random_stop:
+                return i
+            else:
+                fitness_sum += normalizedFitness[i]/total_fitness
+
+        print("Roulette Wheel Select failed. Returns 0 as selection.")
+        return 0
 
     def TournamentSelect(self, fitness, tournamentSelectionParameter, tournamentSize):
         selected = 0
