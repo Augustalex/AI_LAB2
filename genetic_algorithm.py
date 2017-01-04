@@ -127,10 +127,10 @@ class GA(object):
         while second == first:
             second = random.randint(tournamentSize)
 
-        r = random.uniform()
+        random_chance = random.uniform()
 
         candidates = [first, second]
-        if r < tournamentSelectionParameter:
+        if random_chance < tournamentSelectionParameter:
             return fitness.index(max(candidates))  # return the index of the highest fitness
         else:
             return fitness.index(min(candidates))  # return the index of the lowest fitness
