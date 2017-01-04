@@ -113,8 +113,6 @@ class GA(object):
         return 0
 
     def TournamentSelect(self, fitness, tournamentSelectionParameter, tournamentSize):
-        selected = 0
-
         # Use Tournament Selection to select an individual to the mating pool
 
         ##############################
