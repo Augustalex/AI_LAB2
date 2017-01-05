@@ -170,7 +170,7 @@ class GA(object):
             )
 
     def Mutate(self, chromosome, mutationProbability):
-        if mutationProbability >= random.uniform():
+        if mutationProbability >= random.uniform(0, 1):
             length = len(chromosome)
             mutation_point = random.randint(0, length)
             original_bit = chromosome[mutation_point]
