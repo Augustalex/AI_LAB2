@@ -17,9 +17,9 @@ def switchSequence(first_sub_sequence, second_sub_sequence):
         pass
 
     for i in range(first_sub_sequence.length):
-        temp = first_sub_sequence[i]
-        first_sub_sequence[i] = second_sub_sequence[i]
-        second_sub_sequence[i] = temp
+        temp = first_sub_sequence.sequence[i]
+        first_sub_sequence.sequence[i] = second_sub_sequence.sequence[i]
+        second_sub_sequence.sequence[i] = temp
 
 
 class GA(object):
@@ -158,7 +158,7 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        if crossoverProbability >= random.uniform():
+        if crossoverProbability >= random.uniform(0, 1):
             length = len(chromosome1)
             crossover_point = random.randint(0, length)
             switchSequence(
