@@ -170,12 +170,12 @@ class GA(object):
             )
 
     def Mutate(self, chromosome, mutationProbability):
-        if mutationProbability >= random.uniform(0, 1):
-            length = len(chromosome)
-            mutation_point = random.randint(0, length)
-            original_bit = chromosome[mutation_point]
-            flipped_bit = operator.invert(original_bit)
-            chromosome[mutation_point] = flipped_bit
+        for bit in range(chromosome.size):
+            if mutationProbability >= random.uniform(0, 1):
+                if chromosome[bit] == 1:
+                    chromosome[bit] = 0
+                else:
+                    chromosome[bit] = 1
 
     # Mutate the individuals "in-place"
     # NB! Don't forget to apply the mutation probability to each bit
