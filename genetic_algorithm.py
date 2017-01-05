@@ -93,7 +93,7 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        for i in range(0, nVariables):
+        for i in range(vars.size):
             value = 0
 
             power = -1
@@ -103,7 +103,7 @@ class GA(object):
 
             l = variableRange[i][0]
             u = variableRange[i][1]
-            vars[i] = l + (u - l) / (1 - pow(2, -nBits)) + value
+            vars[i] = l + (((u - l) / (1 - pow(2, -nBits))) * value)
 
         return vars
 
@@ -163,11 +163,15 @@ class GA(object):
             crossover_point = random.randint(0, length)
             switchSequence(
                 SubSequence(chromosome1, 0, crossover_point),
-                SubSequence(chromosome2, crossover_point, length))
-            switchSequence(
-                SubSequence(chromosome1, crossover_point, length),
                 SubSequence(chromosome2, 0, crossover_point)
             )
+            #switchSequence(
+            #    SubSequence(chromosome1, 0, crossover_point),
+            #    SubSequence(chromosome2, crossover_point, length))
+            #switchSequence(
+            #    SubSequence(chromosome1, crossover_point, length),
+            #    SubSequence(chromosome2, 0, crossover_point)
+            #)
 
     def Mutate(self, chromosome, mutationProbability):
         for bit in range(chromosome.size):
