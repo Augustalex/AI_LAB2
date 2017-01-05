@@ -4,6 +4,24 @@ import random
 import numpy as np
 
 
+class SubSequence:
+    def __init__(self, sequence, start, length):
+        self.sequence = sequence
+        self.start = start
+        self.length = length
+
+
+# If first and second sequence is not the same length, nothing is mutated.
+def switchSequence(first_sub_sequence, second_sub_sequence):
+    if first_sub_sequence.length != second_sub_sequence.length:
+        pass
+
+    for i in range(first_sub_sequence.length):
+        temp = first_sub_sequence[i]
+        first_sub_sequence[i] = second_sub_sequence[i]
+        second_sub_sequence[i] = temp
+
+
 class GA(object):
     def __init__(self, populationSize, numberOfGenes, crossoverProbability, mutationProbability,
                  selectionMethod, tournamentSelectionParameter, tournamentSize, numberOfVariables,
@@ -134,14 +152,23 @@ class GA(object):
             return fitness.index(min(candidates))  # return the index of the lowest fitness
 
     def Cross(self, chromosome1, chromosome2, crossoverProbability):
-        pass
+        # Cross the two individuals "in-place"
+        # NB! Don't forget to use the crossover probability
 
-    # Cross the two individuals "in-place"
-    # NB! Don't forget to use the crossover probability
+        ##############################
+        ### YOU'RE CODE GOES HERE ####
+        ##############################
 
-    ##############################
-    ### YOU'RE CODE GOES HERE ####
-    ##############################
+        if crossoverProbability >= random.uniform():
+            length = len(chromosome1)
+            crossover_point = random.randint(0, length)
+            switchSequence(
+                SubSequence(chromosome1, 0, crossover_point),
+                SubSequence(chromosome2, crossover_point, length))
+            switchSequence(
+                SubSequence(chromosome1, crossover_point, length),
+                SubSequence(chromosome2, 0, crossover_point)
+            )
 
     def Mutate(self, chromosome, mutationProbability):
         pass
