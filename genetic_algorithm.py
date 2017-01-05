@@ -81,7 +81,7 @@ class GA(object):
         population = np.random.random_integers(0, 1, (populationSize, numberOfGenes))
         return population
 
-    def DecodeChromosome(chromosome, nVariables, variableRange):
+    def DecodeChromosome(self, chromosome, nVariables, variableRange):
         nGenes = np.size(chromosome, 0)  # Number of genes in the chromosome
         nBits = nGenes / nVariables  # Number of bits (genes) per variable
 
@@ -137,11 +137,11 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        first = random.randint(tournamentSize)  # random selection of first individual
+        first = random.randint(0, tournamentSize)  # random selection of first individual
 
-        second = random.randint(tournamentSize)  # second individual, guaranteed not the same as the first one
+        second = random.randint(0, tournamentSize)  # second individual, guaranteed not the same as the first one
         while second == first:
-            second = random.randint(tournamentSize)
+            second = random.randint(0, tournamentSize)
 
         random_chance = random.uniform()
 
