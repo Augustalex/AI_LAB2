@@ -143,13 +143,12 @@ class GA(object):
         while second == first:
             second = random.randint(0, tournamentSize)
 
-        random_chance = random.uniform()
+        random_chance = random.uniform(0, 1)
 
-        candidates = [first, second]
         if random_chance < tournamentSelectionParameter:
-            return fitness.index(max(candidates))  # return the index of the highest fitness
+            return first if fitness[first] > fitness[second] else second  # return the index of the highest fitness
         else:
-            return fitness.index(min(candidates))  # return the index of the lowest fitness
+            return second if fitness[second] < fitness[first] else first  # return the index of the lowest fitness
 
     def Cross(self, chromosome1, chromosome2, crossoverProbability):
         # Cross the two individuals "in-place"
