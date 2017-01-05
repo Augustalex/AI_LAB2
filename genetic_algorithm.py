@@ -115,17 +115,17 @@ class GA(object):
         ##############################
 
         random_stop = random.uniform(0, 1)
-
-        total_fitness = 0
-        for f in normalizedFitness:
-            total_fitness += f
+        print("Random value is ", random_stop)
+        total_fitness = 1
 
         fitness_sum = 0
         for i in range(0, len(normalizedFitness)):
             if fitness_sum > random_stop:
                 return i
             else:
+                print("NormFit: ", normalizedFitness[i], "\tTotalFit: ", total_fitness)
                 fitness_sum += normalizedFitness[i] / total_fitness
+                print("New fitness sum: ", fitness_sum)
 
         print("Roulette Wheel Select failed. Returns 0 as selection.")
         return 0
