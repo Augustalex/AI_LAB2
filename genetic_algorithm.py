@@ -137,18 +137,34 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        first = random.randint(0, tournamentSize)  # random selection of first individual
+        nIndividuals = random.randint(1, tournamentSize)
+        print(nIndividuals, tournamentSize)
+        individuals = {}
 
-        second = random.randint(0, tournamentSize)  # second individual, guaranteed not the same as the first one
-        while second == first:
-            second = random.randint(0, tournamentSize)
+        for i in range(nIndividuals):
+            index = random.randint(0, tournamentSize)
+            while individuals.get(index):
+                index = random.randint(0, tournamentSize)
 
-        random_chance = random.uniform(0, 1)
+            individuals[index] = fitness[index][0]
 
-        if random_chance < tournamentSelectionParameter:
-            return first if fitness[first] > fitness[second] else second  # return the index of the highest fitness
-        else:
-            return second if fitness[second] < fitness[first] else first  # return the index of the lowest fitness
+        print(individuals)
+        contestants = []
+        for key in individuals.keys():
+            contestants.append(key)
+
+        print(contestants)
+        contestants.sort(key=lambda x: individuals[x], reverse=True)
+        print(contestants)
+        while len(contestants) > 1:
+            random_chance = random.uniform(0, 1)
+
+            if random_chance < tournamentSelectionParameter:
+                return contestants.pop()
+            else:
+                contestants.pop()
+
+        return contestants.pop()
 
     def Cross(self, chromosome1, chromosome2, crossoverProbability):
         # Cross the two individuals "in-place"
@@ -165,13 +181,13 @@ class GA(object):
                 SubSequence(chromosome1, 0, crossover_point),
                 SubSequence(chromosome2, 0, crossover_point)
             )
-            #switchSequence(
+            # switchSequence(
             #    SubSequence(chromosome1, 0, crossover_point),
             #    SubSequence(chromosome2, crossover_point, length))
-            #switchSequence(
+            # switchSequence(
             #    SubSequence(chromosome1, crossover_point, length),
             #    SubSequence(chromosome2, 0, crossover_point)
-            #)
+            # )
 
     def Mutate(self, chromosome, mutationProbability):
         for bit in range(chromosome.size):
