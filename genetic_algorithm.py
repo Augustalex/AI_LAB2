@@ -114,21 +114,21 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        random_stop = random.uniform(0, 1)
-        print("Random value is ", random_stop)
-        total_fitness = 1
+        random_stop = random.random()
+        total_fitness = 0
+
+        for n in range(normalizedFitness.size):
+            total_fitness += normalizedFitness[n]
 
         fitness_sum = 0
         for i in range(0, len(normalizedFitness)):
             if fitness_sum > random_stop:
                 return i
             else:
-                print("NormFit: ", normalizedFitness[i], "\tTotalFit: ", total_fitness)
                 fitness_sum += normalizedFitness[i] / total_fitness
-                print("New fitness sum: ", fitness_sum)
 
-        print("Roulette Wheel Select failed. Returns 0 as selection.")
-        return 0
+        # if the random stop is never exceeded
+        return len(normalizedFitness)-1
 
     def TournamentSelect(self, fitness, tournamentSelectionParameter, tournamentSize):
         # Use Tournament Selection to select an individual to the mating pool
@@ -137,27 +137,12 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        nIndividuals = random.randint(1, tournamentSize)
-        print(nIndividuals, tournamentSize)
-        individuals = {}
-
-        for i in range(nIndividuals):
-            index = random.randint(0, tournamentSize)
-            while individuals.get(index):
-                index = random.randint(0, tournamentSize)
-
-            individuals[index] = fitness[index][0]
-
-        print(individuals)
         contestants = []
-        for key in individuals.keys():
-            contestants.append(key)
+        for n in range(len(fitness)):
+            contestants.append(random.randint(0, len(fitness) - 1))
 
-        print(contestants)
-        contestants.sort(key=lambda x: individuals[x], reverse=True)
-        print(contestants)
         while len(contestants) > 1:
-            random_chance = random.uniform(0, 1)
+            random_chance = random.random()
 
             if random_chance < tournamentSelectionParameter:
                 return contestants.pop()
@@ -174,12 +159,12 @@ class GA(object):
         ### YOU'RE CODE GOES HERE ####
         ##############################
 
-        if crossoverProbability >= random.uniform(0, 1):
-            length = len(chromosome1)
+        if crossoverProbability >= random.random():
+            length = chromosome1.size - 1
             crossover_point = random.randint(0, length)
             switchSequence(
-                SubSequence(chromosome1, 0, crossover_point),
-                SubSequence(chromosome2, 0, crossover_point)
+                SubSequence(chromosome1, crossover_point, length),
+                SubSequence(chromosome2, crossover_point, length)
             )
             # switchSequence(
             #    SubSequence(chromosome1, 0, crossover_point),
@@ -191,7 +176,7 @@ class GA(object):
 
     def Mutate(self, chromosome, mutationProbability):
         for bit in range(chromosome.size):
-            if mutationProbability >= random.uniform(0, 1):
+            if mutationProbability >= random.random():
                 if chromosome[bit] == 1:
                     chromosome[bit] = 0
                 else:
